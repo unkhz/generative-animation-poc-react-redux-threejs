@@ -5,4 +5,5 @@ export const DELETE_PARTICLE: string = 'DELETE_PARTICLE';
 export const DELETE_SOME_PARTICLES: string = 'DELETE_SOME_PARTICLES';
 export const ENV_RESIZED: string = 'ENV_RESIZED';
 export const TOGGLE_ANIMATION: string = 'TOGGLE_ANIMATION';
+export const TOGGLE_RENDER_MODE: string = 'TOGGLE_RENDER_MODE';
 export const ADD_STYLE: string = 'ADD_STYLE';

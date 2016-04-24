@@ -75,6 +75,11 @@ export class Environment extends Component {
     if (evt.keyCode === 32) {
       this.props.actions.toggleAnimation();
     }
+
+    // enter toggles render mode
+    else if (evt.keyCode === 13) {
+      this.props.actions.toggleRenderMode();
+    }
   }
 
   onWheel(evt: Event) {

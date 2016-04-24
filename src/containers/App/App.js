@@ -8,6 +8,7 @@ import type {ActionMapType, LayerType, GlobalStateType, ParticleType, StyleDefin
 import Layer from 'components/Layer';
 import { connect } from 'react-redux';
 import {find} from 'lodash';
+import ThreeApp from 'containers/ThreeApp';
 import './App.scss';
 
 type AppPropsType = {
@@ -15,6 +16,37 @@ type AppPropsType = {
   layers: LayerType[],
   particles: ParticleType[],
   aliveParticleCount: number,
+}
+
+type HelpType = {
+  aliveParticleCount: number
+}
+
+class Help extends Component {
+
+  shouldComponentUpdate(nextProps: Object): boolean {
+    return nextProps.aliveParticleCount !== this.props.aliveParticleCount || nextProps.title !== this.props.title;
+  }
+
+  render(): React.Element {
+    const {aliveParticleCount, title} = this.props;
+    if (aliveParticleCount === 0) {
+      return (
+        <div className="help" data-count={aliveParticleCount}><div>
+          scroll to add particles<br/>
+          press enter to switch rendering mode
+        </div></div>
+      );
+    } else {
+      return (
+        <div className="help" data-count={aliveParticleCount}>
+          <div style={{float: 'right'}}>{title}</div>
+          <div>{aliveParticleCount}</div>
+        </div>
+      );
+    }
+  }
+
 }
 
 export class App extends Component {
@@ -26,7 +58,10 @@ export class App extends Component {
     },
     layers: [],
     aliveParticleCount: 0,
-    particles: []
+    particles: [],
+    env: {
+      isRenderingToDOM: true,
+    }
   };
 
   componentWillMount() {
@@ -63,34 +98,26 @@ export class App extends Component {
     });
   }
 
-  renderHelp(): React.Element {
-    const {layers, aliveParticleCount, particles} = this.props;
-    if (aliveParticleCount === 0) {
-      return (
-        <div className="help" data-count={aliveParticleCount}><div>
-          scroll to add particles<br/>
-          space to pause
-        </div></div>
-      );
-    } else {
-      return <div className="help" data-count={aliveParticleCount}><div>{aliveParticleCount}</div></div>;
-    }
+  renderThree(): React.Element {
+    return <ThreeApp />;
   }
 
   render(): React.Element {
-    const { layers } = this.props;
+    const { env, aliveParticleCount, layers } = this.props;
+    const content = env.isRenderingToDOM ? this.renderLayers() : this.renderThree();
     return (
       <div className="full-screen-container app">
-        {this.renderHelp()}
-        {this.renderLayers()}
+        <Help aliveParticleCount={aliveParticleCount} title={env.isRenderingToDOM ? 'DOM' : 'WebGL'} />
+        {content}
       </div>
     );
   }
 }
 
 function mapStateToProps(state: GlobalStateType): GlobalStateType {
-  const {layers, particles, aliveParticleCount} = state;
+  const {env, layers, particles, aliveParticleCount} = state;
   return {
+    env,
     layers,
     particles,
     aliveParticleCount

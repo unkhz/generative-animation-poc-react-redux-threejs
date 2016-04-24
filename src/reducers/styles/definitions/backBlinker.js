@@ -11,9 +11,12 @@ export function getInitialState(globalState: GlobalStateType): StyleType {
   const x = noise(1) * globalState.env.width;
   const y = noise(1) * globalState.env.height;
   const scale = 1/2000 - noise(1000);
+  const shape = decide(shapes, [5,2]);
 
   return {
-    content: decide(shapes, [5,2])(),
+    content: shape.dom(),
+    threeContentColor: randomColor(),
+    threeContent: shape.webGL(),
     style: {},
     transform: {
       translateX: [x, 'px'],
@@ -59,14 +62,32 @@ export const rules = [
 ];
 
 const shapes = [
-  () => (
-    <svg width="300" height="300" viewBox="0 0 51 48" color-rendering="optimizeSpeed" shape-rendering="optimizeSpeed">
-      <path fill={randomColor()} stroke="none" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"/>
-    </svg>
-  ),
-  () => (
-    <svg width="300" height="300" viewBox="0 0 100 100" color-rendering="optimizeSpeed" shape-rendering="optimizeSpeed">
-      <circle fill={randomColor()} stroke="none"  cx="50" cy="50" r="50" />
-    </svg>
-  ),
+  {
+    webGL: () => (
+      <extrudeGeometry>
+        <shape>
+          <moveTo x={20} y={0} />
+          <lineTo x={0} y={80} />
+          <lineTo x={50} y={100} />
+          <lineTo x={100} y={80} />
+          <lineTo x={80} y={0} />
+          <lineTo x={20} y={0} />
+        </shape>
+      </extrudeGeometry>
+    ),
+    dom: () => (
+      <svg width="300" height="300" viewBox="0 0 51 48" color-rendering="optimizeSpeed" shape-rendering="optimizeSpeed">
+        <path fill={randomColor()} stroke="none" d="m25,1 6,17h18l-14,11 5,17-15-10-15,10 5-17-14-11h18z"/>
+      </svg>
+    )
+  }, {
+    webGL: () => (
+      <circleGeometry radius={100} />
+    ),
+    dom: () => (
+      <svg width="300" height="300" viewBox="0 0 100 100" color-rendering="optimizeSpeed" shape-rendering="optimizeSpeed">
+        <path fill={randomColor()} stroke="none" d="M0,50a50,50 0 1,0 100,0a50,50 0 1,0 -100,0" />
+      </svg>
+    ),
+  }
 ];

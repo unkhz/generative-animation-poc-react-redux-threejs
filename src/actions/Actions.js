@@ -18,6 +18,12 @@ export function toggleAnimation(): ActionType {
   };
 }
 
+export function toggleRenderMode(): ActionType {
+  return {
+    type: actionTypes.TOGGLE_RENDER_MODE
+  };
+}
+
 export function addStyle(style: StyleType): ActionType {
   return {
     type: actionTypes.ADD_STYLE,

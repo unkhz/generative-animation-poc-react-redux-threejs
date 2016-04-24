@@ -17,10 +17,22 @@ export function getInitialState(globalState: GlobalStateType): Object {
   return {
     content: (
       <svg width="300" height="300" viewBox="0 0 100 100" color-rendering="optimizeSpeed" shape-rendering="optimizeSpeed">
-        <polygon fill={renderColorValue(contentColor.r/4, contentColor.g/4, contentColor.b/4)} stroke="none" points="0 100 100 50 0 0 20 50 0 100"/>
-        <polygon fill={renderColorValue(contentColor.r/2, contentColor.g/2, contentColor.b/2)} stroke="none" points="10 90 70 50 10 10 30 50 10 90"/>
-        <polygon fill={renderColorValue(contentColor.r, contentColor.g, contentColor.b)} stroke="none" points="20 80 60 50 20 20 40 50 20 80"/>
+        <path fill={renderColorValue(contentColor.r/4, contentColor.g/4, contentColor.b/4)} stroke="none" d="M0,100 100,50 0,0 20,50 0,100"/>
+        <path fill={renderColorValue(contentColor.r/2, contentColor.g/2, contentColor.b/2)} stroke="none" d="M10,90 70,50 10,10 30,50 10,90Z"/>
+        <path fill={renderColorValue(contentColor.r, contentColor.g, contentColor.b)} stroke="none" d="M20,80 60,50 20,20 40,50 20,80Z"/>
       </svg>
+    ),
+    threeContentColor: randomColor(),
+    threeContent: (
+      <extrudeGeometry>
+        <shape>
+          <moveTo x={0} y={100} />
+          <lineTo x={100} y={50} />
+          <lineTo x={0} y={0} />
+          <lineTo x={20} y={50} />
+          <lineTo x={0} y={100} />
+        </shape>
+      </extrudeGeometry>
     ),
     shouldBeDestroyed: false,
     style: {
